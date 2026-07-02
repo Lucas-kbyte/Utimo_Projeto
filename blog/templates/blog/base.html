@@ -16,6 +16,41 @@
         body.wp-Limbu { background: url("{% static 'blog/images/Limbu.gif' %}") no-repeat center center fixed !important; background-size: cover !important; }
         body.wp-team { background: url("{% static 'blog/images/team.gif' %}") no-repeat center center fixed !important; background-size: cover !important; }
 
+        /* --- CAIXINHA DAS NOTÍCIAS GAYS COM ANIMAÇÃO --- */
+        .caixa-noticias {
+            background-color: rgba(30, 30, 30, 0.85); /* Fundo um pouco transparente */
+            color: #fff;
+            padding: 20px;
+            border-radius: 15px;
+            border: 2px solid #ff00ff; /* Borda rosa estilizada */
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+            margin-bottom: 30px;
+            cursor: pointer;
+            display: block;
+            max-width: 800px;
+
+            /* Sistema de animação de flutuar */
+            animation: flutuarNoticias 3s infinite ease-in-out;
+            transition: transform 0.2s ease-in-out;
+        }
+
+        /* Efeito de parar a animação e crescer ao passar o mouse */
+        .caixa-noticias:hover {
+            animation: none;
+            transform: scale(1.05) !important;
+        }
+
+        .caixa-noticias h3 {
+            color: #ffb3ff;
+            font-weight: bold;
+        }
+
+        /* Animação que faz a caixinha flutuar */
+        @keyframes flutuarNoticias {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+
         /* --- CONTAINER DO PLAYER --- */
         .player-container {
             position: fixed;
@@ -216,50 +251,24 @@
 
     <script>
         const listaMusicas = [
-            {
-                titulo: "Música 1 - Hero",
-                src: "{% static 'blog/audio/Hero.mp3' %}", 
-                img: "{% static 'blog/images/hero.png' %}" 
-            },
-            {
-                titulo: "Música 2 - Compass",
-                src: "{% static 'blog/audio/Compass.mp3' %}",
-                img: "{% static 'blog/images/compass.png' %}"
-            },
-            {
-                titulo: "Música 3 - Tian",
-                src: "{% static 'blog/audio/TIAN.mp3' %}",
-                img: "{% static 'blog/images/tian.png' %}"
-            },
-            {
-                titulo: "Música 4 - More",
-                src: "{% static 'blog/audio/More.mp3' %}",
-                img: "{% static 'blog/images/more.png' %}"
-            },
-            {
-                titulo: "Música 5 - Violet",
-                src: "{% static 'blog/audio/Violet.mp3' %}",
-                img: "{% static 'blog/images/violet.png' %}"
-            },
-            {
-                titulo: "Música 6 - Rocket",
-                src: "{% static 'blog/audio/Rocket.mp3' %}",
-                img: "{% static 'blog/images/rocket.png' %}"
-            }
+            { titulo: "Música 1 - Hero", src: "{% static 'blog/audio/Hero.mp3' %}", img: "{% static 'blog/images/hero.png' %}" },
+            { titulo: "Música 2 - Compass", src: "{% static 'blog/audio/Compass.mp3' %}", img: "{% static 'blog/images/compass.png' %}" },
+            { titulo: "Música 3 - Tian", src: "{% static 'blog/audio/TIAN.mp3' %}", img: "{% static 'blog/images/tian.png' %}" },
+            { titulo: "Música 4 - More", src: "{% static 'blog/audio/More.mp3' %}", img: "{% static 'blog/images/more.png' %}" },
+            { titulo: "Música 5 - Violet", src: "{% static 'blog/audio/Violet.mp3' %}", img: "{% static 'blog/images/violet.png' %}" },
+            { titulo: "Música 6 - Rocket", src: "{% static 'blog/audio/Rocket.mp3' %}", img: "{% static 'blog/images/rocket.png' %}" }
         ];
 
         const tagAudio = document.getElementById("audio-principal");
         const txtTitulo = document.getElementById("player-titulo");
         const imgCapa = document.getElementById("player-img");
         const btnPlayPause = document.getElementById("btn-play-pause");
-        
         const sliderVolume = document.getElementById("volume-slider");
         const iconVolume = document.getElementById("volume-icon");
 
         let indiceAtual = parseInt(localStorage.getItem("player_indice")) || 0;
         let tempoSalvo = parseFloat(localStorage.getItem("player_tempo")) || 0;
         let estavaTocando = localStorage.getItem("player_tocando") === "true";
-        
         let volumeSalvo = localStorage.getItem("player_volume");
         let volumeAtual = volumeSalvo !== null ? parseFloat(volumeSalvo) : 1.0;
 
@@ -270,16 +279,11 @@
         }
 
         function carregarMusica(indice) {
-            if (indice < 0 || indice >= listaMusicas.length) {
-                indiceAtual = 0;
-                indice = 0;
-            }
-            
+            if (indice < 0 || indice >= listaMusicas.length) { indiceAtual = 0; indice = 0; }
             const musica = listaMusicas[indice];
             tagAudio.src = musica.src;
             txtTitulo.innerText = musica.titulo;
             imgCapa.src = musica.img;
-            
             localStorage.setItem("player_indice", indice);
         }
 
@@ -312,16 +316,11 @@
         }
 
         function atualizarIconeVolume(vol) {
-            if (vol === 0) {
-                iconVolume.innerText = "🔇";
-            } else if (vol < 0.4) {
-                iconVolume.innerText = "🔉";
-            } else {
-                iconVolume.innerText = "🔊";
-            }
+            if (vol === 0) { iconVolume.innerText = "🔇"; } 
+            else if (vol < 0.4) { iconVolume.innerText = "🔉"; } 
+            else { iconVolume.innerText = "🔊"; }
         }
 
-        // CORRIGIDO AQUI: Removido o espaço de 'volEscolhido'
         sliderVolume.addEventListener("input", (e) => {
             const volEscolhido = parseFloat(e.target.value);
             tagAudio.volume = volEscolhido;
@@ -330,19 +329,14 @@
         });
 
         tagAudio.addEventListener("ended", proximaMusica);
-
-        window.addEventListener("beforeunload", () => {
-            localStorage.setItem("player_tempo", tagAudio.currentTime);
-        });
+        window.addEventListener("beforeunload", () => { localStorage.setItem("player_tempo", tagAudio.currentTime); });
 
         window.addEventListener("DOMContentLoaded", () => {
             const wallpaperSalvo = localStorage.getItem("site_wallpaper") || "dong";
             mudarWallpaper(wallpaperSalvo);
-
             tagAudio.volume = volumeAtual;
             sliderVolume.value = volumeAtual;
             atualizarIconeVolume(volumeAtual);
-
             carregarMusica(indiceAtual);
             tagAudio.currentTime = tempoSalvo;
 

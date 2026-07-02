@@ -4,29 +4,61 @@
 {% block content %}
 
     <style>
+        /* Caixinha principal do sobre mim com animação */
+        .caixa-sobre-mim {
+            background-color: #222; 
+            color: white;
+            padding: 20px 25px;
+            border-radius: 12px;
+            border: 3px solid #ff3333; 
+            margin-bottom: 40px;
+            max-width: 700px;
+            box-shadow: 0px 4px 15px rgba(0,0,0,0.4);
+            cursor: pointer;
+            
+            /* Sistema de animação igual às caixinhas */
+            animation: flutuar 3s infinite ease-in-out;
+            transition: transform 0.2s ease-in-out;
+        }
+
+        /* Quando passa o mouse na caixinha do sobre mim */
+        .caixa-sobre-mim:hover {
+            animation: none; /* Para de se mexer */
+            transform: scale(1.05) !important; /* Aumenta levemente (como é maior, 1.05 fica lindo) */
+        }
+
         .caixinhas-container {
             display: flex;
-            gap: 30px;
-            margin-top: 60px;
+            gap: 20px; 
             flex-wrap: wrap;
         }
 
         .caixinha {
-            padding: 15px 20px;
-            border-radius: 10px;
+            padding: 10px 15px; 
+            border-radius: 8px;
             border: 3px solid rgb(0, 0, 0);
             color: white;
             font-weight: bold;
             font-family: sans-serif;
             cursor: pointer;
             text-align: center;
-            min-width: 100px;
+            width: 200px; /* Formato retangular garantido */
+            font-size: 14px;
             
+            animation: flutuar 3s infinite ease-in-out;
             transition: transform 0.2s ease-in-out;
         }
 
+        /* Animação que faz flutuar suavemente */
+        @keyframes flutuar {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+
         .caixinha:hover {
-            transform: scale(1.15);
+            animation: none; 
+            transform: scale(1.15) !important; 
+            z-index: 10;
         }
 
         .cor-azul { background-color: #007bff; }
@@ -35,22 +67,23 @@
         .cor-vermelho-escuro { background-color: #8b0000; }
     </style>    
 
-    <h3>Sobre mim :3 </h3>
-
-    <p>Oie me chamo lucas, eu sou programador de python, mas pretendo aumentar o meu conhecimento de programação</p>
+    <div class="caixa-sobre-mim">
+        <h3>Sobre mim :3 </h3>
+        <p>Oie me chamo lucas, eu sou programador de python, mas pretendo aumentar o meu conhecimento de programação</p>
+    </div>
 
     <div class="caixinhas-container">
         <div class="caixinha cor-azul">O que eu sei de Python?
-            <p>Eu Ainda estou aprendendo, mas eu sei bastante de Python</p>
+            <p style="font-weight: normal; margin-top: 8px; font-size: 12px;">Eu Ainda estou aprendendo, mas eu sei bastante de Python</p>
         </div>
         <div class="caixinha cor-ciano">Por que eu comecei a programar?
-            <p>Sempre foi o meu sonho a programar, então eu decidi fazer esse sonho se tornar realidade</p>
+            <p style="font-weight: normal; margin-top: 8px; font-size: 12px;">Sempre foi o meu sonho a programar, então eu decidi fazer esse sonho se tornar realidade</p>
         </div>
         <div class="caixinha cor-vermelho">O que eu pretendo aprender?
-            <p>Eu pretendo aprender Java, Java Script, Luau, e ampliar meu conhecimento de HTML</p>
+            <p style="font-weight: normal; margin-top: 8px; font-size: 12px;">Eu pretendo aprender Java, Java Script, Luau, e ampliar meu conhecimento de HTML</p>
         </div>
         <div class="caixinha cor-vermelho-escuro">O que eu pretendo fazer?
-            <p>Eu pretendo entrar no mundo de criação de jogos, mas, eu posso fazer sites também</p>
+            <p style="font-weight: normal; margin-top: 8px; font-size: 12px;">Eu pretendo entrar no mundo de criação de jogos, mas, eu posso fazer sites também</p>
         </div>
     </div>
 
