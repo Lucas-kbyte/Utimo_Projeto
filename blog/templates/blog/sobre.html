@@ -1,0 +1,57 @@
+{% extends "blog/base.html" %}
+{% load static %}
+
+{% block content %}
+
+    <style>
+        .caixinhas-container {
+            display: flex;
+            gap: 30px;
+            margin-top: 60px;
+            flex-wrap: wrap;
+        }
+
+        .caixinha {
+            padding: 15px 20px;
+            border-radius: 10px;
+            border: 3px solid rgb(0, 0, 0);
+            color: white;
+            font-weight: bold;
+            font-family: sans-serif;
+            cursor: pointer;
+            text-align: center;
+            min-width: 100px;
+            
+            transition: transform 0.2s ease-in-out;
+        }
+
+        .caixinha:hover {
+            transform: scale(1.15);
+        }
+
+        .cor-azul { background-color: #007bff; }
+        .cor-ciano { background-color: #00ffff; color: black; }
+        .cor-vermelho { background-color: #ff3333; }
+        .cor-vermelho-escuro { background-color: #8b0000; }
+    </style>    
+
+    <h3>Sobre mim :3 </h3>
+
+    <p>Oie me chamo lucas, eu sou programador de python, mas pretendo aumentar o meu conhecimento de programação</p>
+
+    <div class="caixinhas-container">
+        <div class="caixinha cor-azul">O que eu sei de Python?
+            <p>Eu Ainda estou aprendendo, mas eu sei bastante de Python</p>
+        </div>
+        <div class="caixinha cor-ciano">Por que eu comecei a programar?
+            <p>Sempre foi o meu sonho a programar, então eu decidi fazer esse sonho se tornar realidade</p>
+        </div>
+        <div class="caixinha cor-vermelho">O que eu pretendo aprender?
+            <p>Eu pretendo aprender Java, Java Script, Luau, e ampliar meu conhecimento de HTML</p>
+        </div>
+        <div class="caixinha cor-vermelho-escuro">O que eu pretendo fazer?
+            <p>Eu pretendo entrar no mundo de criação de jogos, mas, eu posso fazer sites também</p>
+        </div>
+    </div>
+
+{% endblock %}

@@ -1,0 +1,361 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DevBlog</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <link rel="stylesheet" href="{% static 'blog/css/style.css' %}" >
+
+    <style>
+        /* --- ESTILOS DOS PAPÉIS DE PAREDE CORRIGIDOS PARA .GIF --- */
+        body.wp-dong { background: url("{% static 'blog/images/dong.gif' %}") no-repeat center center fixed !important; background-size: cover !important; }
+        body.wp-Dan { background: url("{% static 'blog/images/Dan.gif' %}") no-repeat center center fixed !important; background-size: cover !important; }
+        body.wp-Foun { background: url("{% static 'blog/images/Foun.gif' %}") no-repeat center center fixed !important; background-size: cover !important; }
+        body.wp-Limbu { background: url("{% static 'blog/images/Limbu.gif' %}") no-repeat center center fixed !important; background-size: cover !important; }
+        body.wp-team { background: url("{% static 'blog/images/team.gif' %}") no-repeat center center fixed !important; background-size: cover !important; }
+
+        /* --- CONTAINER DO PLAYER --- */
+        .player-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 9999;
+            width: 65px; 
+            height: 65px;
+            display: flex;
+            align-items: flex-end;
+            justify-content: flex-end;
+            transition: width 0.3s ease, height 0.3s ease;
+        }
+
+        /* --- O SEU GIF DE DISCO --- */
+        .player-disco {
+            width: 60px;
+            height: 60px;
+            cursor: pointer;
+            transition: transform 0.4s ease, opacity 0.3s ease;
+            object-fit: contain;
+        }
+
+        /* Estilo da mini aba de música */
+        .player-flutuante {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 320px; 
+            background-color: #222;
+            color: white;
+            border: 2px solid white; 
+            border-radius: 15px;
+            padding: 12px;
+            box-shadow: 0px 4px 15px rgba(0,0,0,0.5);
+            font-family: sans-serif;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+
+            /* Estado Escondido por padrão */
+            opacity: 0;
+            pointer-events: none; 
+            transform: scale(0.8) translate(20px, 20px);
+            transition: transform 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.25s ease;
+        }
+
+        /* --- INTERAÇÃO DO MOUSE (HOVER) --- */
+        .player-container:hover {
+            width: 330px; 
+            height: 90px;
+        }
+
+        .player-container:hover .player-disco {
+            opacity: 0;
+            transform: rotate(180deg) scale(0);
+            pointer-events: none;
+        }
+
+        .player-container:hover .player-flutuante {
+            opacity: 1;
+            pointer-events: auto;
+            transform: scale(1) translate(0, 0);
+        }
+
+        /* Imagem do álbum/aba */
+        .player-capa {
+            width: 50px;
+            height: 50px;
+            border-radius: 8px;
+            object-fit: cover;
+            background-color: #444; 
+            border: 1px solid #fff;
+        }
+
+        .player-info {
+            flex-grow: 1;
+            overflow: hidden;
+        }
+
+        .player-titulo {
+            font-size: 14px;
+            font-weight: bold;
+            margin: 0;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .player-botoes {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 4px;
+        }
+
+        .player-btn {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            transition: transform 0.1s;
+        }
+
+        .player-btn:hover {
+            transform: scale(1.2);
+            color: #00ffff; 
+        }
+
+        /* --- ESTILO DO CONTROLE DE VOLUME --- */
+        .player-volume {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            margin-left: auto; 
+        }
+
+        .player-volume span {
+            font-size: 14px;
+            user-select: none;
+        }
+
+        .player-volume input[type="range"] {
+            width: 60px;
+            height: 4px;
+            accent-color: #00ffff; 
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body class="d-flex flex-column min-vh-100">
+
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <div class="container">
+                <a class="navbar-brand" href="{% url 'home' %}">🚀 DevBlog</a>
+                <div class="collapse navbar-collapse">
+                    <ul class="navbar-nav ms-auto align-items-center">
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'home' %}">Início</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'about' %}">Sobre</a>
+                        </li>
+                        
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="wallpaperDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                🖼️ Fundo
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="wallpaperDropdown">
+                                <li><a class="dropdown-item" href="javascript:void(0);" onclick="mudarWallpaper('dong')">Dong (Padrão)</a></li>
+                                <li><a class="dropdown-item" href="javascript:void(0);" onclick="mudarWallpaper('Dan')">Dan</a></li>
+                                <li><a class="dropdown-item" href="javascript:void(0);" onclick="mudarWallpaper('Foun')">Foun</a></li>
+                                <li><a class="dropdown-item" href="javascript:void(0);" onclick="mudarWallpaper('Limbu')">Limbu</a></li>
+                                <li><a class="dropdown-item" href="javascript:void(0);" onclick="mudarWallpaper('team')">Team</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    
+    <main class="container my-5 flex-grow-1">
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <div class="player-container">
+        <img src="{% static 'blog/images/disco.gif' %}" class="player-disco" alt="Música">
+
+        <div class="player-flutuante">
+            <img src="" class="player-capa" id="player-img" alt="Capa">
+
+            <div class="player-info">
+                <p class="player-titulo" id="player-titulo">Carregando...</p>
+                <div class="player-botoes">
+                    <button class="player-btn" onclick="musicaAnterior()">⏮</button>
+                    <button class="player-btn" id="btn-play-pause" onclick="alternarPlay()">▶</button>
+                    <button class="player-btn" onclick="proximaMusica()">⏭</button>
+
+                    <div class="player-volume">
+                        <span id="volume-icon">🔊</span>
+                        <input type="range" id="volume-slider" min="0" max="1" step="0.05" value="1">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <audio id="audio-principal"></audio>
+    <footer class="bg-dark text-white text-center py-4 mt-auto">
+        <p class="mb-0">© 2026 Desenvolvido pela Turma Python. Todos os direitos reservados.</p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+
+    <script>
+        const listaMusicas = [
+            {
+                titulo: "Música 1 - Hero",
+                src: "{% static 'blog/audio/Hero.mp3' %}", 
+                img: "{% static 'blog/images/hero.png' %}" 
+            },
+            {
+                titulo: "Música 2 - Compass",
+                src: "{% static 'blog/audio/Compass.mp3' %}",
+                img: "{% static 'blog/images/compass.png' %}"
+            },
+            {
+                titulo: "Música 3 - Tian",
+                src: "{% static 'blog/audio/TIAN.mp3' %}",
+                img: "{% static 'blog/images/tian.png' %}"
+            },
+            {
+                titulo: "Música 4 - More",
+                src: "{% static 'blog/audio/More.mp3' %}",
+                img: "{% static 'blog/images/more.png' %}"
+            },
+            {
+                titulo: "Música 5 - Violet",
+                src: "{% static 'blog/audio/Violet.mp3' %}",
+                img: "{% static 'blog/images/violet.png' %}"
+            },
+            {
+                titulo: "Música 6 - Rocket",
+                src: "{% static 'blog/audio/Rocket.mp3' %}",
+                img: "{% static 'blog/images/rocket.png' %}"
+            }
+        ];
+
+        const tagAudio = document.getElementById("audio-principal");
+        const txtTitulo = document.getElementById("player-titulo");
+        const imgCapa = document.getElementById("player-img");
+        const btnPlayPause = document.getElementById("btn-play-pause");
+        
+        const sliderVolume = document.getElementById("volume-slider");
+        const iconVolume = document.getElementById("volume-icon");
+
+        let indiceAtual = parseInt(localStorage.getItem("player_indice")) || 0;
+        let tempoSalvo = parseFloat(localStorage.getItem("player_tempo")) || 0;
+        let estavaTocando = localStorage.getItem("player_tocando") === "true";
+        
+        let volumeSalvo = localStorage.getItem("player_volume");
+        let volumeAtual = volumeSalvo !== null ? parseFloat(volumeSalvo) : 1.0;
+
+        function mudarWallpaper(nome) {
+            document.body.classList.remove('wp-dong', 'wp-Dan', 'wp-Foun', 'wp-Limbu', 'wp-team');
+            document.body.classList.add('wp-' + nome);
+            localStorage.setItem("site_wallpaper", nome);
+        }
+
+        function carregarMusica(indice) {
+            if (indice < 0 || indice >= listaMusicas.length) {
+                indiceAtual = 0;
+                indice = 0;
+            }
+            
+            const musica = listaMusicas[indice];
+            tagAudio.src = musica.src;
+            txtTitulo.innerText = musica.titulo;
+            imgCapa.src = musica.img;
+            
+            localStorage.setItem("player_indice", indice);
+        }
+
+        function alternarPlay() {
+            if (tagAudio.paused) {
+                tagAudio.play().catch(e => console.log("Aguardando interação do usuário."));
+                btnPlayPause.innerText = "⏸";
+                localStorage.setItem("player_tocando", "true");
+            } else {
+                tagAudio.pause();
+                btnPlayPause.innerText = "▶";
+                localStorage.setItem("player_tocando", "false");
+            }
+        }
+
+        function proximaMusica() {
+            indiceAtual = (indiceAtual + 1) % listaMusicas.length;
+            carregarMusica(indiceAtual);
+            tagAudio.play().catch(e => console.log(e));
+            btnPlayPause.innerText = "⏸";
+            localStorage.setItem("player_tocando", "true");
+        }
+
+        function musicaAnterior() {
+            indiceAtual = (indiceAtual - 1 + listaMusicas.length) % listaMusicas.length;
+            carregarMusica(indiceAtual);
+            tagAudio.play().catch(e => console.log(e));
+            btnPlayPause.innerText = "⏸";
+            localStorage.setItem("player_tocando", "true");
+        }
+
+        function atualizarIconeVolume(vol) {
+            if (vol === 0) {
+                iconVolume.innerText = "🔇";
+            } else if (vol < 0.4) {
+                iconVolume.innerText = "🔉";
+            } else {
+                iconVolume.innerText = "🔊";
+            }
+        }
+
+        // CORRIGIDO AQUI: Removido o espaço de 'volEscolhido'
+        sliderVolume.addEventListener("input", (e) => {
+            const volEscolhido = parseFloat(e.target.value);
+            tagAudio.volume = volEscolhido;
+            atualizarIconeVolume(volEscolhido);
+            localStorage.setItem("player_volume", volEscolhido);
+        });
+
+        tagAudio.addEventListener("ended", proximaMusica);
+
+        window.addEventListener("beforeunload", () => {
+            localStorage.setItem("player_tempo", tagAudio.currentTime);
+        });
+
+        window.addEventListener("DOMContentLoaded", () => {
+            const wallpaperSalvo = localStorage.getItem("site_wallpaper") || "dong";
+            mudarWallpaper(wallpaperSalvo);
+
+            tagAudio.volume = volumeAtual;
+            sliderVolume.value = volumeAtual;
+            atualizarIconeVolume(volumeAtual);
+
+            carregarMusica(indiceAtual);
+            tagAudio.currentTime = tempoSalvo;
+
+            if (estavaTocando) {
+                tagAudio.play()
+                    .then(() => { btnPlayPause.innerText = "⏸"; })
+                    .catch(() => {
+                        btnPlayPause.innerText = "▶";
+                        localStorage.setItem("player_tocando", "false");
+                    });
+            }
+        });
+    </script>
+</body>
+</html>
