@@ -15,5 +15,5 @@ class Artigo(models.Model):
     
     autor = models.CharField(max_length=50, default="Admin")
     
-    def __init__(self):
+    def __str__(self):
         return self.titulo

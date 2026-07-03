@@ -3,5 +3,6 @@ from . import views
 
 urlpatterns = [
     path('', views.home, name='home'),
-    path('sobre/', views.sobre_mim, name='about'), 
+    
+    path('artigo/<int:id>', views.arigo_detalhes, name="detalhe_artigo"),
 ]

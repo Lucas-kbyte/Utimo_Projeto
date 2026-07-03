@@ -1,10 +1,57 @@
 {% extends "blog/base.html" %}
 
 {% block content %}
-
-    <div class="caixa-noticias">
-        <h3>Últimas Notícias Gays</h3>
-        <p>Bem-vindo ao DevBlog! Nossos escra- Redatores já estão trabalhando nos artigos</p>
+    <div class="caixa-noticias mb-4" style="color: #fff;">
+        <h2 class="mb-0">Últimas Notícias
+            <p class="h5 text-white">As notícias estão logo abaixo</p>
+        </h2>
     </div>
 
-    {% endblock %}
+    {% for artigo in lista_artigos %}
+        <div class="caixa-noticias mb-4 cartao-noticia-item" data-categoria="{{ artigo.categoria.nome }}">
+            
+            <div class="card bg-transparent text-white" style="border: none; color: #ff69b4;">
+                
+                <div class="card-header p-0 bg-transparent" style="cursor: pointer; border: none;" data-bs-toggle="collapse" data-bs-target="#noticia-{{ forloop.counter }}" aria-expanded="false">
+                    <h3 class="mb-1" style="font-size: 1.4rem;">
+                        🔽 {{ artigo.titulo }}
+                    </h3>
+                    <h6 class="text-white mb-0" style="font-size: 0.85rem;">
+                        Categoria: <span style="color: #ffb3ff;">{{ artigo.categoria.nome }}</span> | Autor: {{ artigo.autor }}
+                    </h6>
+                    </h6>
+                </div>
+
+                <div id="noticia-{{ forloop.counter }}" class="collapse">
+                    <div class="card-body px-0 pt-3 pb-1">
+                        <p class="card-text" style="white-space: pre-wrap; color: #eee; font-size: 1rem;">{{ artigo.conteudo }}</p>
+                        <hr style="background-color: rgba(255,255,255,0.2);">
+                        <p class="card-text mb-0"><small class="text-muted">Publicado em: {{ artigo.data_publicacao }}</small></p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    {% empty %}
+        <div class="caixa-noticias">
+            <p class="mb-0">Nenhuma notícia publicada ainda.</p>
+        </div>
+    {% endfor %}
+
+    <script>
+        function filtrarNaNavbar(categoriaSelecionada) {
+            // Seleciona todas as caixinhas individuais de notícias
+            let caixasNoticias = document.querySelectorAll('.cartao-noticia-item');
+            
+            caixasNoticias.forEach(function(caixa) {
+                // Se for 'todas' ou corresponder à categoria, exibe a caixinha flutuante inteira
+                if (categoriaSelecionada === 'todas' || caixa.dataset.categoria === categoriaSelecionada) {
+                    caixa.style.setProperty('display', 'block', 'important');
+                } else {
+                    // Caso contrário, oculta por completo do feed
+                    caixa.style.setProperty('display', 'none', 'important');
+                }
+            });
+        }
+    </script>
+{% endblock %}
