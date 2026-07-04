@@ -16,3 +16,7 @@ def home(request):
 
 def sobre_mim(request):
     return render(request, 'blog/sobre.html')
+
+def artigo_detalhes(request, id):
+    artigo = get_object_or_404(Artigo, pk=id)
+    return render(request, 'blog/detalhes.html', {'artigo': artigo})
