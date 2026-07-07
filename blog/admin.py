@@ -1,7 +1,7 @@
 from django.contrib import admin
-from .models import Categoria, Artigo
+from .models import Categoria, Artigo, MensagemContato
 
-admin.site.register(Categoria)
+admin.site.register(Categoria, MensagemContato)
 
 @admin.register(Artigo)
 class ArtigoAdmin(admin.ModelAdmin):
