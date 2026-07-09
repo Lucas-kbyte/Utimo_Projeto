@@ -1,4 +1,6 @@
 from django.db import models
+# Importa o modelo de usuário padrão do Django para o Autor
+from django.contrib.auth.models import User
 
 class Categoria(models.Model):
     nome = models.CharField(max_length=100)
@@ -11,9 +13,14 @@ class Artigo(models.Model):
     conteudo = models.TextField()
     data_publicacao = models.DateTimeField(auto_now_add=True)
     
-    categoria = models.ForeignKey(Categoria, on_delete=models.CASCADE)
+    categoria = models.ForeignKey(
+        Categoria, 
+        on_delete=models.SET_NULL, 
+        null=True, 
+        blank=True
+    )
     
-    autor = models.CharField(max_length=50, default="Admin")
+    autor = models.ForeignKey(User, on_delete=models.CASCADE)
     
     def __str__(self):
         return self.titulo
