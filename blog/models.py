@@ -1,5 +1,4 @@
 from django.db import models
-# Importa o modelo de usuário padrão do Django para o Autor
 from django.contrib.auth.models import User
 
 class Categoria(models.Model):
