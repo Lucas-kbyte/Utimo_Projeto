@@ -1,15 +1,40 @@
-{% extends "blog/base.html"%}
+{% extends "blog/base.html" %}
 
 {% block content %}
-    <h2>Fale Conosco</h2>
-    <p>Envie-nos uma mensagem, critica ou sugestão</p>
+    <style>
+        /* Aplica o efeito flutuante nas caixas do formulário de contato */
+        .animar-titulo-contato {
+            animation: flutuar 3s infinite ease-in-out;
+            animation-delay: 0s;
+        }
 
-    <form method="POST">
-        {% csrf_token %}
+        .animar-form-contato {
+            animation: flutuar 3s infinite ease-in-out;
+            animation-delay: 0.2s; /* Entra um pouquinho depois para dar o efeito de delay */
+        }
 
-        {{ form.as_p}}
+        /* Pausa a flutuação ao passar o mouse para ficar fácil de digitar */
+        .caixa-noticias:hover {
+            animation-play-state: paused;
+        }
+    </style>
 
-        <button type="submit" class="btn btn-primary mt-3">Enviar Mensagem</button>
-    </form>
+    <div class="caixa-noticias animar-titulo-contato mb-4" style="color: #fff; cursor: default;">
+        <h2>✉️ Fale Conosco</h2>
+        <p class="mb-0">Envie-nos uma mensagem, crítica ou sugestão.</p>
+    </div>
 
+    <div class="caixa-noticias animar-form-contato" style="cursor: default;">
+        <form method="POST" class="p-2">
+            {% csrf_token %}
+
+            <div class="text-white">
+                {{ form.as_p }}
+            </div>
+
+            <button type="submit" class="btn btn-success fw-bold w-100 mt-3" style="border: 1px solid #fff; box-shadow: 0 0 10px rgba(40, 167, 69, 0.5);">
+                🚀 Enviar Mensagem
+            </button>
+        </form>
+    </div>
 {% endblock %}

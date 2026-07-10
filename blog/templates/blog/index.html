@@ -1,57 +1,122 @@
 {% extends "blog/base.html" %}
 
 {% block content %}
-    <div class="caixa-noticias mb-4" style="color: #fff;">
+    <div class="caixa-noticias mb-4" style="color: #fff; animation: none;">
         <h2 class="mb-0">Últimas Notícias
             <p class="h5 text-white">As notícias estão logo abaixo</p>
         </h2>
+        
+        <input type="text" id="barraPesquisa" class="form-control mt-3 bg-dark text-white" placeholder="🔍 Pesquisar notícia por título..." style="border: 1px solid #ffb3ff;">
     </div>
 
-    {% for artigo in lista_artigos %}
-        <div class="caixa-noticias mb-4 cartao-noticia-item" data-categoria="{{ artigo.categoria.nome }}">
-            
-            <div class="card bg-transparent text-white" style="border: none; color: #7869ff;">
+    <div id="listaDeNoticias">
+        {% for artigo in lista_artigos %}
+            <div class="caixa-noticias mb-4 cartao-noticia-item" data-categoria="{{ artigo.categoria.nome }}" style="animation-delay: calc({{ forloop.counter }} * 0.15s);">
                 
-                <div class="card-header p-0 bg-transparent" style="cursor: pointer; border: none;" data-bs-toggle="collapse" data-bs-target="#noticia-{{ forloop.counter }}" aria-expanded="false">
-                    <h3 class="mb-1" style="font-size: 1.4rem;">
-                        🔽 {{ artigo.titulo }}
-                    </h3>
-                    <h6 class="text-white mb-0" style="font-size: 0.85rem;">
-                        Categoria: <span style="color: #ffb3ff;">{{ artigo.categoria.nome }}</span> | Autor: {{ artigo.autor }}
-                    </h6>
-                    </h6>
-                </div>
+                <div class="card bg-transparent text-white" style="border: none; color: #7869ff;">
+                    
+                    <a href="#" target="_blank" class="text-decoration-none card-header p-0 bg-transparent" style="cursor: pointer; border: none; display: block;">
+                        <h3 class="mb-1 text-white" style="font-size: 1.4rem;">
+                            🔗 {{ artigo.titulo }}
+                        </h3>
+                        <h6 class="text-white mb-0" style="font-size: 0.85rem;">
+                            Categoria: <span style="color: #ffb3ff;">{{ artigo.categoria.nome }}</span> | Autor: {{ artigo.autor }}
+                        </h6>
+                    </a>
 
-                <div id="noticia-{{ forloop.counter }}" class="collapse">
                     <div class="card-body px-0 pt-3 pb-1">
-                        <p class="card-text" style="white-space: pre-wrap; color: #eee; font-size: 1rem;">{{ artigo.conteudo }}</p>
+                        <p class="card-text" style="white-space: pre-wrap; color: #eee; font-size: 1rem;">{{ artigo.conteudo|truncatechars:150 }}</p>
                         <hr style="background-color: rgba(255,255,255,0.2);">
                         <p class="card-text mb-0"><small class="text-muted">Publicado em: {{ artigo.data_publicacao }}</small></p>
                     </div>
-                </div>
 
+                </div>
             </div>
-        </div>
-    {% empty %}
-        <div class="caixa-noticias">
-            <p class="mb-0">Nenhuma notícia publicada ainda.</p>
-        </div>
-    {% endfor %}
+        {% empty %}
+            <div class="caixa-noticias">
+                <p class="mb-0">Nenhuma notícia publicada ainda.</p>
+            </div>
+        {% endfor %}
+    </div>
+
+    <div class="d-flex justify-content-between align-items-center mt-4" id="controlesPaginacao" style="display: none !important;">
+        <button id="btnAnterior" class="btn btn-outline-light">⬅️ Anterior</button>
+        <span id="infoPagina" class="text-white fw-bold">Página 1</span>
+        <button id="btnProxima" class="btn btn-outline-light">Próxima ➡️</button>
+    </div>
 
     <script>
-        function filtrarNaNavbar(categoriaSelecionada) {
-            // Seleciona todas as caixinhas individuais de notícias
-            let caixasNoticias = document.querySelectorAll('.cartao-noticia-item');
+        document.addEventListener("DOMContentLoaded", function() {
+            const artigos = Array.from(document.querySelectorAll('.cartao-noticia-item'));
+            const barraPesquisa = document.getElementById('barraPesquisa');
+            const btnAnterior = document.getElementById('btnAnterior');
+            const btnProxima = document.getElementById('btnProxima');
+            const infoPagina = document.getElementById('infoPagina');
+            const controlesPaginacao = document.getElementById('controlesPaginacao');
             
-            caixasNoticias.forEach(function(caixa) {
-                // Se for 'todas' ou corresponder à categoria, exibe a caixinha flutuante inteira
-                if (categoriaSelecionada === 'todas' || caixa.dataset.categoria === categoriaSelecionada) {
-                    caixa.style.setProperty('display', 'block', 'important');
+            let artigosFiltrados = artigos;
+            let paginaAtual = 1;
+            const itensPorPagina = 4; // Mostra 4 notícias por vez (você pode mudar isso!)
+
+            function atualizarFeed() {
+                // Esconde tudo primeiro
+                artigos.forEach(art => art.style.setProperty('display', 'none', 'important'));
+                
+                // Calcula o pedaço do array que vai aparecer
+                let inicio = (paginaAtual - 1) * itensPorPagina;
+                let fim = inicio + itensPorPagina;
+                let artigosVisiveis = artigosFiltrados.slice(inicio, fim);
+                
+                // Mostra só os artigos da página atual
+                artigosVisiveis.forEach(art => art.style.setProperty('display', 'block', 'important'));
+
+                // Atualiza o texto e os botões
+                infoPagina.innerText = `Página ${paginaAtual} de ${Math.ceil(artigosFiltrados.length / itensPorPagina) || 1}`;
+                btnAnterior.disabled = paginaAtual === 1;
+                btnProxima.disabled = fim >= artigosFiltrados.length;
+
+                // Mostra a paginação só se tiver mais itens que o limite
+                if (artigosFiltrados.length > itensPorPagina) {
+                    controlesPaginacao.style.setProperty('display', 'flex', 'important');
                 } else {
-                    // Caso contrário, oculta por completo do feed
-                    caixa.style.setProperty('display', 'none', 'important');
+                    controlesPaginacao.style.setProperty('display', 'none', 'important');
                 }
+            }
+
+            // SISTEMA DE PESQUISA
+            barraPesquisa.addEventListener('input', function() {
+                let termo = this.value.toLowerCase();
+                artigosFiltrados = artigos.filter(artigo => {
+                    return artigo.innerText.toLowerCase().includes(termo);
+                });
+                paginaAtual = 1; // Volta pra primeira página ao pesquisar
+                atualizarFeed();
             });
+
+            // CLIQUE DOS BOTÕES DE PÁGINA
+            btnAnterior.addEventListener('click', function() {
+                if (paginaAtual > 1) { paginaAtual--; atualizarFeed(); window.scrollTo(0, 0); }
+            });
+
+            btnProxima.addEventListener('click', function() {
+                if ((paginaAtual * itensPorPagina) < artigosFiltrados.length) { paginaAtual++; atualizarFeed(); window.scrollTo(0, 0); }
+            });
+
+            atualizarFeed(); // Roda a primeira vez ao carregar a tela
+        });
+
+        // A função da Navbar que você já tinha agora precisa conversar com a paginação
+        function filtrarNaNavbar(categoriaSelecionada) {
+            const barraPesquisa = document.getElementById('barraPesquisa');
+            barraPesquisa.value = ""; // Limpa a barra de pesquisa
+            
+            const artigos = Array.from(document.querySelectorAll('.cartao-noticia-item'));
+            if (categoriaSelecionada === 'todas') {
+                barraPesquisa.dispatchEvent(new Event('input')); // Finge que digitou pra resetar
+            } else {
+                barraPesquisa.value = categoriaSelecionada;
+                barraPesquisa.dispatchEvent(new Event('input')); 
+            }
         }
     </script>
 {% endblock %}

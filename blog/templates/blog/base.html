@@ -1,43 +1,45 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DevBlog</title>
+    <title>DevBlog do Lucas</title>
+    
+    <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
-    <link rel="stylesheet" href="{% static 'blog/css/style.css' %}" >
+    
+    <!-- Opcional: Se você tiver um style.css externo -->
+    <link rel="stylesheet" href="{% static 'blog/css/style.css' %}">
 
     <style>
-        /* --- ESTILOS DOS PAPÉIS DE PAREDE CORRIGIDOS PARA .GIF --- */
+        /* ========================================================
+           ESTILOS PADRÃO (MODO ESCURO / NEON)
+           ======================================================== */
+        body {
+            background-color: #121212;
+            color: #ffffff;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        /* --- ESTILOS DOS PAPÉIS DE PAREDE (.GIF) --- */
         body.wp-dong { background: url("{% static 'blog/images/dong.gif' %}") no-repeat center center fixed !important; background-size: cover !important; }
         body.wp-Dan { background: url("{% static 'blog/images/Dan.gif' %}") no-repeat center center fixed !important; background-size: cover !important; }
         body.wp-Foun { background: url("{% static 'blog/images/Foun.gif' %}") no-repeat center center fixed !important; background-size: cover !important; }
         body.wp-Limbu { background: url("{% static 'blog/images/Limbu.gif' %}") no-repeat center center fixed !important; background-size: cover !important; }
         body.wp-team { background: url("{% static 'blog/images/team.gif' %}") no-repeat center center fixed !important; background-size: cover !important; }
 
-        /* --- CAIXINHA DAS NOTÍCIAS GAYS COM ANIMAÇÃO --- */
-        .caixa-noticias {
-            background-color: rgba(30, 30, 30, 0.85); /* Fundo um pouco transparente */
-            color: #fff;
-            padding: 20px;
+        /* Estilo das caixas grandes de conteúdo (com fundo semitransparente para ver o GIF) */
+        .caixa-noticias, .caixa-sobre-mim {
+            background-color: rgba(30, 30, 30, 0.85);
+            border: 2px solid #ff00ff; /* Borda rosa/neon */
             border-radius: 15px;
-            border: 2px solid #ff00ff; /* Borda rosa estilizada */
+            padding: 20px;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
             margin-bottom: 30px;
-            cursor: pointer;
-            display: block;
-            max-width: 800px;
-
-            /* Sistema de animação de flutuar */
+            transition: all 0.3s ease-in-out;
             animation: flutuarNoticias 3s infinite ease-in-out;
-            transition: transform 0.2s ease-in-out;
-        }
-
-        /* Efeito de parar a animação e crescer ao passar o mouse */
-        .caixa-noticias:hover {
-            animation: none;
-            transform: scale(1.05) !important;
         }
 
         .caixa-noticias h3 {
@@ -45,13 +47,115 @@
             font-weight: bold;
         }
 
-        /* Animação que faz a caixinha flutuar */
+        .caixa-noticias:hover, .caixa-sobre-mim:hover {
+            animation: none;
+            transform: scale(1.02) !important;
+            border-color: #7869ff;
+        }
+
+        /* Animação global de flutuar */
         @keyframes flutuarNoticias {
             0%, 100% { transform: translateY(0); }
             50% { transform: translateY(-8px); }
         }
 
-        /* --- CONTAINER DO PLAYER --- */
+        /* ========================================================
+           ESTILOS EXCLUSIVOS DO MODO CLARO
+           ======================================================== */
+        body.light-mode {
+            background-color: #f4f6f9 !important; /* Só aparece se não tiver GIF por cima */
+            color: #212529 !important;
+        }
+
+        body.light-mode .navbar {
+            background-color: #ffffff !important;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            border-bottom: 1px solid #dee2e6;
+        }
+        body.light-mode .nav-link, 
+        body.light-mode .navbar-brand {
+            color: #212529 !important;
+        }
+        body.light-mode #botao-tema {
+            background-color: #212529 !important;
+            color: #ffffff !important;
+            border-color: #212529 !important;
+        }
+
+        body.light-mode .dropdown-menu {
+            background-color: #ffffff !important;
+            border: 1px solid #ccc !important;
+        }
+        body.light-mode .dropdown-item {
+            color: #212529 !important;
+        }
+        body.light-mode .dropdown-item:hover {
+            background-color: #f1f1f1 !important;
+        }
+
+        /* Caixas Principais no Modo Claro */
+        body.light-mode .caixa-noticias, 
+        body.light-mode .caixa-sobre-mim {
+            background-color: rgba(255, 255, 255, 0.90) !important;
+            color: #212529 !important;
+            border: 2px solid #ccc !important;
+            box-shadow: 0px 4px 15px rgba(0,0,0,0.1) !important;
+        }
+        body.light-mode .caixa-noticias h2,
+        body.light-mode .caixa-noticias h3,
+        body.light-mode .caixa-noticias p,
+        body.light-mode .caixa-noticias h6,
+        body.light-mode .caixa-sobre-mim h3,
+        body.light-mode .caixa-sobre-mim p,
+        body.light-mode .card-header h3 {
+            color: #212529 !important;
+        }
+        body.light-mode .caixa-noticias span[style*="color: #ffb3ff;"] {
+            color: #b500b5 !important;
+        }
+
+        body.light-mode #barraPesquisa {
+            background-color: #ffffff !important;
+            color: #212529 !important;
+            border: 1px solid #ccc !important;
+        }
+
+        body.light-mode .cor-azul { background-color: #cce5ff !important; color: #004085 !important; }
+        body.light-mode .cor-ciano { background-color: #d1ecf1 !important; color: #0c5460 !important; }
+        body.light-mode .cor-vermelho { background-color: #f8d7da !important; color: #721c24 !important; }
+        body.light-mode .cor-vermelho-escuro { background-color: #f5c6cb !important; color: #491217 !important; }
+        body.light-mode .caixinha p { color: inherit !important; }
+
+        /* Rodapé no Modo Claro */
+        body.light-mode footer.bg-dark {
+            background-color: #ffffff !important;
+            color: #212529 !important;
+            border-top: 1px solid #dee2e6;
+        }
+        body.light-mode footer.text-white {
+            color: #212529 !important;
+        }
+
+        /* Player Flutuante no Modo Claro */
+        body.light-mode .player-flutuante {
+            background-color: #ffffff !important;
+            color: #212529 !important;
+            border-color: #ccc !important;
+            box-shadow: 0px 4px 15px rgba(0,0,0,0.1) !important;
+        }
+        body.light-mode .player-capa {
+            border-color: #ccc !important;
+        }
+        body.light-mode .player-btn {
+            color: #212529 !important;
+        }
+        body.light-mode .player-btn:hover {
+            color: #b500b5 !important; /* Cor rosa bonitinha ao passar o mouse */
+        }
+
+        /* ========================================================
+           PLAYER DE MÚSICA FLUTUANTE
+           ======================================================== */
         .player-container {
             position: fixed;
             bottom: 20px;
@@ -65,7 +169,6 @@
             transition: width 0.3s ease, height 0.3s ease;
         }
 
-        /* --- O SEU GIF DE DISCO --- */
         .player-disco {
             width: 60px;
             height: 60px;
@@ -74,7 +177,6 @@
             object-fit: contain;
         }
 
-        /* Estilo da mini aba de música */
         .player-flutuante {
             position: absolute;
             bottom: 0;
@@ -90,33 +192,29 @@
             display: flex;
             align-items: center;
             gap: 12px;
-
-            /* Estado Escondido por padrão */
             opacity: 0;
             pointer-events: none; 
             transform: scale(0.8) translate(20px, 20px);
             transition: transform 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.25s ease;
         }
 
-        /* --- INTERAÇÃO DO MOUSE (HOVER) --- */
-        .player-container:hover {
+        .player-container:hover, .player-container:active, .player-container:focus-within {
             width: 330px; 
             height: 90px;
         }
 
-        .player-container:hover .player-disco {
+        .player-container:hover .player-disco, .player-container:active .player-disco, .player-container:focus-within .player-disco {
             opacity: 0;
             transform: rotate(180deg) scale(0);
             pointer-events: none;
         }
 
-        .player-container:hover .player-flutuante {
+        .player-container:hover .player-flutuante, .player-container:active .player-flutuante, .player-container:focus-within .player-flutuante {
             opacity: 1;
             pointer-events: auto;
             transform: scale(1) translate(0, 0);
         }
 
-        /* Imagem do álbum/aba */
         .player-capa {
             width: 50px;
             height: 50px;
@@ -161,7 +259,6 @@
             color: #00ffff; 
         }
 
-        /* --- ESTILO DO CONTROLE DE VOLUME --- */
         .player-volume {
             display: flex;
             align-items: center;
@@ -169,16 +266,18 @@
             margin-left: auto; 
         }
 
-        .player-volume span {
-            font-size: 14px;
-            user-select: none;
-        }
-
+        .player-volume span { font-size: 14px; user-select: none; }
         .player-volume input[type="range"] {
             width: 60px;
             height: 4px;
             accent-color: #00ffff; 
             cursor: pointer;
+        }
+
+        @media (max-width: 576px) {
+            .player-flutuante { width: 280px; padding: 10px; gap: 8px; }
+            .player-container:hover, .player-container:active, .player-container:focus-within { width: 290px; height: 85px; }
+            .player-volume input[type="range"] { width: 45px; }
         }
     </style>
 </head>
@@ -186,11 +285,27 @@
 <body class="d-flex flex-column min-vh-100">
 
     <header>
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
             <div class="container">
-                <a class="navbar-brand" href="{% url 'home' %}">🚀 DevBlog</a>
-                <div class="collapse navbar-collapse">
+                <a class="navbar-brand fw-bold" href="{% url 'home' %}">🚀 DevBlog do Lucas</a>
+                
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarDevBlog" aria-controls="navbarDevBlog" aria-expanded="false" aria-label="Alternar navegação">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                
+                <div class="collapse navbar-collapse" id="navbarDevBlog">
                     <ul class="navbar-nav ms-auto align-items-center">
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'home' %}">Início</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'about' %}">Sobre</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'contact' %}">Contato</a>
+                        </li>
+                        
+                        <!-- Dropdown de Categorias -->
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle text-success fw-bold" href="#" id="categoriaDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 🔍 Categorias
@@ -209,13 +324,8 @@
                                 {% endfor %}
                             </ul>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'home' %}">Início</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'about' %}">Sobre</a>
-                        </li>
-                        
+
+                        <!-- Dropdown de Papéis de Parede -->
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="wallpaperDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 🖼️ Fundo
@@ -225,20 +335,30 @@
                                 <li><a class="dropdown-item" href="javascript:void(0);" onclick="mudarWallpaper('Dan')">Dan</a></li>
                                 <li><a class="dropdown-item" href="javascript:void(0);" onclick="mudarWallpaper('Foun')">Foun</a></li>
                                 <li><a class="dropdown-item" href="javascript:void(0);" onclick="mudarWallpaper('team')">Team</a></li>
+                                <li><a class="dropdown-item" href="javascript:void(0);" onclick="mudarWallpaper('Limbu')">Limbu</a></li>
                             </ul>
+                        </li>
+
+                        <!-- Botão de Tema Claro/Escuro -->
+                        <li class="nav-item">
+                            <button id="botao-tema" class="btn btn-outline-light ms-lg-3 mt-2 mt-lg-0" style="border-radius: 20px; padding: 4px 14px; font-size: 14px;">
+                                ☀️ Modo Claro
+                            </button>
                         </li>
                     </ul>
                 </div>
             </div>
         </nav>
     </header>
-    
-    <main class="container my-5 flex-grow-1">
+
+    <!-- Conteúdo Principal -->
+    <main class="container mb-5 flex-grow-1">
         {% block content %}
         {% endblock %}
     </main>
 
-    <div class="player-container">
+    <!-- Player de Música Flutuante -->
+    <div class="player-container" tabindex="0">
         <img src="{% static 'blog/images/disco.gif' %}" class="player-disco" alt="Música">
 
         <div class="player-flutuante">
@@ -259,99 +379,117 @@
             </div>
         </div>
     </div>
-
     <audio id="audio-principal"></audio>
-    <footer class="bg-dark text-white text-center py-4 mt-auto">
+
+    <!-- Rodapé -->
+    <footer class="bg-dark text-white text-center py-4 mt-auto" style="z-index: 10; position: relative;">
         <p class="mb-0">© 2026 Desenvolvido pela Turma Python. Todos os direitos reservados.</p>
     </footer>
 
+    <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
 
+    <!-- Scripts do Tema, Wallpaper e Player -->
     <script>
-        const listaMusicas = [
-            { titulo: "Música 1 - Hero", src: "{% static 'blog/audio/Hero.mp3' %}", img: "{% static 'blog/images/hero.png' %}" },
-            { titulo: "Música 2 - Compass", src: "{% static 'blog/audio/Compass.mp3' %}", img: "{% static 'blog/images/compass.png' %}" },
-            { titulo: "Música 3 - Tian", src: "{% static 'blog/audio/TIAN.mp3' %}", img: "{% static 'blog/images/tian.png' %}" },
-            { titulo: "Música 4 - More", src: "{% static 'blog/audio/More.mp3' %}", img: "{% static 'blog/images/more.png' %}" },
-            { titulo: "Música 5 - Violet", src: "{% static 'blog/audio/Violet.mp3' %}", img: "{% static 'blog/images/violet.png' %}" },
-            { titulo: "Música 6 - Rocket", src: "{% static 'blog/audio/Rocket.mp3' %}", img: "{% static 'blog/images/rocket.png' %}" }
-        ];
+        document.addEventListener("DOMContentLoaded", function() {
+            // === 1. LÓGICA DO MODO CLARO/ESCURO ===
+            const botaoTema = document.getElementById("botao-tema");
+            const body = document.body;
 
-        const tagAudio = document.getElementById("audio-principal");
-        const txtTitulo = document.getElementById("player-titulo");
-        const imgCapa = document.getElementById("player-img");
-        const btnPlayPause = document.getElementById("btn-play-pause");
-        const sliderVolume = document.getElementById("volume-slider");
-        const iconVolume = document.getElementById("volume-icon");
+            if (localStorage.getItem("tema") === "claro") {
+                body.classList.add("light-mode");
+                botaoTema.innerText = "🌙 Modo Escuro";
+            }
 
-        let indiceAtual = parseInt(localStorage.getItem("player_indice")) || 0;
-        let tempoSalvo = parseFloat(localStorage.getItem("player_tempo")) || 0;
-        let estavaTocando = localStorage.getItem("player_tocando") === "true";
-        let volumeSalvo = localStorage.getItem("player_volume");
-        let volumeAtual = volumeSalvo !== null ? parseFloat(volumeSalvo) : 1.0;
+            botaoTema.addEventListener("click", function() {
+                body.classList.toggle("light-mode");
+                
+                if (body.classList.contains("light-mode")) {
+                    botaoTema.innerText = "🌙 Modo Escuro";
+                    localStorage.setItem("tema", "claro");
+                } else {
+                    botaoTema.innerText = "☀️ Modo Claro";
+                    localStorage.setItem("tema", "escuro");
+                }
+            });
 
-        function mudarWallpaper(nome) {
-            document.body.classList.remove('wp-dong', 'wp-Dan', 'wp-Foun', 'wp-Limbu', 'wp-team');
-            document.body.classList.add('wp-' + nome);
-            localStorage.setItem("site_wallpaper", nome);
-        }
+            // === 2. LÓGICA DO PLAYER DE MÚSICA ===
+            const listaMusicas = [
+                { titulo: "Música 1 - Hero", src: "{% static 'blog/audio/Hero.mp3' %}", img: "{% static 'blog/images/hero.png' %}" },
+                { titulo: "Música 2 - Compass", src: "{% static 'blog/audio/Compass.mp3' %}", img: "{% static 'blog/images/compass.png' %}" },
+                { titulo: "Música 3 - Tian Tian", src: "{% static 'blog/audio/Tian.mp3' %}", img: "{% static 'blog/images/tian.png' %}" },
+                { titulo: "Música 4 - More Guns", src: "{% static 'blog/audio/More.mp3' %}", img: "{% static 'blog/images/more.png' %}" },
+                { titulo: "Música 5 - Through Patches of Violet", src: "{% static 'blog/audio/Violet.mp3' %}", img: "{% static 'blog/images/violet.png' %}" },
+                { titulo: "Música 6 - Rocket", src: "{% static 'blog/audio/Rocket.mp3' %}", img: "{% static 'blog/images/rocket.png' %}" }
+            ];
 
-        function carregarMusica(indice) {
-            if (indice < 0 || indice >= listaMusicas.length) { indiceAtual = 0; indice = 0; }
-            const musica = listaMusicas[indice];
-            tagAudio.src = musica.src;
-            txtTitulo.innerText = musica.titulo;
-            imgCapa.src = musica.img;
-            localStorage.setItem("player_indice", indice);
-        }
+            const tagAudio = document.getElementById("audio-principal");
+            const txtTitulo = document.getElementById("player-titulo");
+            const imgCapa = document.getElementById("player-img");
+            const btnPlayPause = document.getElementById("btn-play-pause");
+            const sliderVolume = document.getElementById("volume-slider");
+            const iconVolume = document.getElementById("volume-icon");
 
-        function alternarPlay() {
-            if (tagAudio.paused) {
-                tagAudio.play().catch(e => console.log("Aguardando interação do usuário."));
+            let indiceAtual = parseInt(localStorage.getItem("player_indice")) || 0;
+            let tempoSalvo = parseFloat(localStorage.getItem("player_tempo")) || 0;
+            let estavaTocando = localStorage.getItem("player_tocando") === "true";
+            let volumeSalvo = localStorage.getItem("player_volume");
+            let volumeAtual = volumeSalvo !== null ? parseFloat(volumeSalvo) : 1.0;
+
+            function carregarMusica(indice) {
+                if (indice < 0 || indice >= listaMusicas.length) { indiceAtual = 0; indice = 0; }
+                const musica = listaMusicas[indice];
+                tagAudio.src = musica.src;
+                txtTitulo.innerText = musica.titulo;
+                imgCapa.src = musica.img;
+                localStorage.setItem("player_indice", indice);
+            }
+
+            window.alternarPlay = function() {
+                if (tagAudio.paused) {
+                    tagAudio.play().catch(e => console.log("Aguardando interação do usuário."));
+                    btnPlayPause.innerText = "⏸";
+                    localStorage.setItem("player_tocando", "true");
+                } else {
+                    tagAudio.pause();
+                    btnPlayPause.innerText = "▶";
+                    localStorage.setItem("player_tocando", "false");
+                }
+            }
+
+            window.proximaMusica = function() {
+                indiceAtual = (indiceAtual + 1) % listaMusicas.length;
+                carregarMusica(indiceAtual);
+                tagAudio.play().catch(e => console.log(e));
                 btnPlayPause.innerText = "⏸";
                 localStorage.setItem("player_tocando", "true");
-            } else {
-                tagAudio.pause();
-                btnPlayPause.innerText = "▶";
-                localStorage.setItem("player_tocando", "false");
             }
-        }
 
-        function proximaMusica() {
-            indiceAtual = (indiceAtual + 1) % listaMusicas.length;
-            carregarMusica(indiceAtual);
-            tagAudio.play().catch(e => console.log(e));
-            btnPlayPause.innerText = "⏸";
-            localStorage.setItem("player_tocando", "true");
-        }
+            window.musicaAnterior = function() {
+                indiceAtual = (indiceAtual - 1 + listaMusicas.length) % listaMusicas.length;
+                carregarMusica(indiceAtual);
+                tagAudio.play().catch(e => console.log(e));
+                btnPlayPause.innerText = "⏸";
+                localStorage.setItem("player_tocando", "true");
+            }
 
-        function musicaAnterior() {
-            indiceAtual = (indiceAtual - 1 + listaMusicas.length) % listaMusicas.length;
-            carregarMusica(indiceAtual);
-            tagAudio.play().catch(e => console.log(e));
-            btnPlayPause.innerText = "⏸";
-            localStorage.setItem("player_tocando", "true");
-        }
+            function atualizarIconeVolume(vol) {
+                if (vol === 0) { iconVolume.innerText = "🔇"; } 
+                else if (vol < 0.4) { iconVolume.innerText = "🔉"; } 
+                else { iconVolume.innerText = "🔊"; }
+            }
 
-        function atualizarIconeVolume(vol) {
-            if (vol === 0) { iconVolume.innerText = "🔇"; } 
-            else if (vol < 0.4) { iconVolume.innerText = "🔉"; } 
-            else { iconVolume.innerText = "🔊"; }
-        }
+            sliderVolume.addEventListener("input", (e) => {
+                const volEscolhido = parseFloat(e.target.value);
+                tagAudio.volume = volEscolhido;
+                atualizarIconeVolume(volEscolhido);
+                localStorage.setItem("player_volume", volEscolhido);
+            });
 
-        sliderVolume.addEventListener("input", (e) => {
-            const volEscolhido = parseFloat(e.target.value);
-            tagAudio.volume = volEscolhido;
-            atualizarIconeVolume(volEscolhido);
-            localStorage.setItem("player_volume", volEscolhido);
-        });
+            tagAudio.addEventListener("ended", proximaMusica);
+            window.addEventListener("beforeunload", () => { localStorage.setItem("player_tempo", tagAudio.currentTime); });
 
-        tagAudio.addEventListener("ended", proximaMusica);
-        window.addEventListener("beforeunload", () => { localStorage.setItem("player_tempo", tagAudio.currentTime); });
-
-        window.addEventListener("DOMContentLoaded", () => {
-            const wallpaperSalvo = localStorage.getItem("site_wallpaper") || "dong";
-            mudarWallpaper(wallpaperSalvo);
+            // Inicializando o player com as memórias
             tagAudio.volume = volumeAtual;
             sliderVolume.value = volumeAtual;
             atualizarIconeVolume(volumeAtual);
@@ -366,6 +504,15 @@
                         localStorage.setItem("player_tocando", "false");
                     });
             }
+
+            // === 3. LÓGICA DO WALLPAPER ===
+            const wallpaperSalvo = localStorage.getItem("site_wallpaper") || "dong";
+            window.mudarWallpaper = function(nome) {
+                document.body.classList.remove('wp-dong', 'wp-Dan', 'wp-Foun', 'wp-Limbu', 'wp-team');
+                document.body.classList.add('wp-' + nome);
+                localStorage.setItem("site_wallpaper", nome);
+            }
+            mudarWallpaper(wallpaperSalvo);
         });
     </script>
 </body>

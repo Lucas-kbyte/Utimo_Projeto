@@ -4,7 +4,36 @@
 {% block content %}
 
     <style>
-        /* Caixinha principal do sobre mim com animação */
+        /* Container para centralizar a foto separada */
+        .wrapper-foto {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 25px;
+        }
+
+        /* Foto de perfil em um círculo flutuante totalmente independente */
+        .foto-perfil-circulo {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%; /* Deixa perfeitamente redondo */
+            object-fit: cover;
+            border: 4px solid #ff3333; /* Borda neon vermelha */
+            box-shadow: 0px 4px 20px rgba(255, 51, 51, 0.4); /* Brilho em volta da foto */
+            cursor: pointer;
+            
+            /* Sistema de animação independente */
+            animation: flutuar 3s infinite ease-in-out;
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+        }
+
+        /* Efeito de zoom ao passar o mouse na foto */
+        .foto-perfil-circulo:hover {
+            animation: none;
+            transform: scale(1.1) !important;
+            box-shadow: 0px 4px 30px rgba(255, 51, 51, 0.8);
+        }
+
+        /* Caixinha principal do sobre mim (agora focada só no texto) */
         .caixa-sobre-mim {
             background-color: #222; 
             color: white;
@@ -15,26 +44,28 @@
             max-width: 700px;
             box-shadow: 0px 4px 15px rgba(0,0,0,0.4);
             cursor: pointer;
+            text-align: center; /* Centraliza o texto interno */
             
-            /* Sistema de animação igual às caixinhas */
+            /* Flutua com um pequeno atraso em relação à foto */
             animation: flutuar 3s infinite ease-in-out;
+            animation-delay: 0.15s;
             transition: transform 0.2s ease-in-out;
         }
 
-        /* Quando passa o mouse na caixinha do sobre mim */
         .caixa-sobre-mim:hover {
-            animation: none; /* Para de se mexer */
-            transform: scale(1.05) !important; /* Aumenta levemente (como é maior, 1.05 fica lindo) */
+            animation: none;
+            transform: scale(1.05) !important;
         }
 
         .caixinhas-container {
             display: flex;
             gap: 20px; 
             flex-wrap: wrap;
+            justify-content: center;
         }
 
         .caixinha {
-            padding: 10px 15px; 
+            padding: 15px; 
             border-radius: 8px;
             border: 3px solid rgb(0, 0, 0);
             color: white;
@@ -42,14 +73,14 @@
             font-family: sans-serif;
             cursor: pointer;
             text-align: center;
-            width: 200px; /* Formato retangular garantido */
+            width: 220px;
             font-size: 14px;
             
             animation: flutuar 3s infinite ease-in-out;
             transition: transform 0.2s ease-in-out;
         }
 
-        /* Animação que faz flutuar suavemente */
+        /* Animação suave de flutuar */
         @keyframes flutuar {
             0%, 100% { transform: translateY(0); }
             50% { transform: translateY(-8px); }
@@ -57,7 +88,7 @@
 
         .caixinha:hover {
             animation: none; 
-            transform: scale(1.15) !important; 
+            transform: scale(1.11) !important; 
             z-index: 10;
         }
 
@@ -67,23 +98,31 @@
         .cor-vermelho-escuro { background-color: #8b0000; }
     </style>    
 
-    <div class="caixa-sobre-mim">
+    <div class="wrapper-foto">
+        <img src="{% static 'blog/images/tennah.png' %}" alt="Foto real" class="foto-perfil-circulo">
+    </div>
+
+    <div class="caixa-sobre-mim mx-auto">
         <h3>Sobre mim :3 </h3>
-        <p>Oie me chamo lucas, eu sou programador de python, mas pretendo aumentar o meu conhecimento de programação</p>
+        <p class="mb-0">Oie me chamo Lucas, eu sou programador de Python, mas pretendo aumentar o meu conhecimento de programação.</p>
     </div>
 
     <div class="caixinhas-container">
-        <div class="caixinha cor-azul">O que eu sei de Python?
-            <p style="font-weight: normal; margin-top: 8px; font-size: 12px;">Eu Ainda estou aprendendo, mas eu sei bastante de Python</p>
+        <div class="caixinha cor-azul" style="animation-delay: 0.3s;">
+            O que eu sei de Python?
+            <p style="font-weight: normal; margin-top: 8px; font-size: 12px; margin-bottom: 0;">Eu ainda estou aprendendo, mas eu sei bastante de Python!</p>
         </div>
-        <div class="caixinha cor-ciano">Por que eu comecei a programar?
-            <p style="font-weight: normal; margin-top: 8px; font-size: 12px;">Sempre foi o meu sonho a programar, então eu decidi fazer esse sonho se tornar realidade</p>
+        <div class="caixinha cor-ciano" style="animation-delay: 0.45s;">
+            Por que eu comecei?
+            <p style="font-weight: normal; margin-top: 8px; font-size: 12px; margin-bottom: 0;">Sempre foi o meu sonho programar, então eu decidi fazer esse sonho se tornar realidade.</p>
         </div>
-        <div class="caixinha cor-vermelho">O que eu pretendo aprender?
-            <p style="font-weight: normal; margin-top: 8px; font-size: 12px;">Eu pretendo aprender Java, Java Script, Luau, e ampliar meu conhecimento de HTML</p>
+        <div class="caixinha cor-vermelho" style="animation-delay: 0.6s;">
+            O que pretendo aprender?
+            <p style="font-weight: normal; margin-top: 8px; font-size: 12px; margin-bottom: 0;">Eu pretendo aprender Java, JavaScript, Luau, e ampliar meu conhecimento de HTML.</p>
         </div>
-        <div class="caixinha cor-vermelho-escuro">O que eu pretendo fazer?
-            <p style="font-weight: normal; margin-top: 8px; font-size: 12px;">Eu pretendo entrar no mundo de criação de jogos, mas, eu posso fazer sites também</p>
+        <div class="caixinha cor-vermelho-escuro" style="animation-delay: 0.75s;">
+            O que pretendo fazer?
+            <p style="font-weight: normal; margin-top: 8px; font-size: 12px; margin-bottom: 0;">Eu pretendo entrar no mundo de criação de jogos, mas também posso fazer sites!</p>
         </div>
     </div>
 
