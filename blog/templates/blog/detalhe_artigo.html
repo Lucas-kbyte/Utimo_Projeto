@@ -1,0 +1,32 @@
+{% extends "blog/base.html" %}
+
+{% block content %}
+<div class="caixa-noticias mb-4" style="animation: none;">
+    
+    <h1 class="mb-3 text-white" style="color: #7869ff;">
+        {{ artigo.titulo }}
+    </h1>
+    
+    <div class="mb-4 text-white">
+        <span class="badge bg-dark" style="border: 1px solid #ffb3ff; color: #ffb3ff;">
+            {{ artigo.categoria.nome }}
+        </span>
+        <small class="ms-2">
+            👤 Por: {{ artigo.autor }} | 📅 {{ artigo.data_publicacao|date:"d/m/Y H:i" }}
+        </small>
+    </div>
+    
+    <hr style="background-color: rgba(255,255,255,0.2);">
+
+    <div class="mt-4 text-white" style="font-size: 1.1rem; line-height: 1.6; white-space: pre-wrap;">
+        {{ artigo.conteudo }}
+    </div>
+    
+    <div class="mt-5 text-center">
+        <button onclick="window.close()" class="btn btn-outline-light" style="border-color: #ff00ff; color: #ffb3ff;">
+            ❌ Fechar esta guia
+        </button>
+    </div>
+    
+</div>
+{% endblock %}

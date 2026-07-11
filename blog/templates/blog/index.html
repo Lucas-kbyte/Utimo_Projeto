@@ -15,7 +15,7 @@
                 
                 <div class="card bg-transparent text-white" style="border: none; color: #7869ff;">
                     
-                    <a href="#" target="_blank" class="text-decoration-none card-header p-0 bg-transparent" style="cursor: pointer; border: none; display: block;">
+                    <a href="{% url 'detalhe_artigo' artigo.id %}" target="_blank" class="text-decoration-none card-header p-0 bg-transparent" style="cursor: pointer; border: none; display: block;">
                         <h3 class="mb-1 text-white" style="font-size: 1.4rem;">
                             🔗 {{ artigo.titulo }}
                         </h3>
@@ -23,7 +23,6 @@
                             Categoria: <span style="color: #ffb3ff;">{{ artigo.categoria.nome }}</span> | Autor: {{ artigo.autor }}
                         </h6>
                     </a>
-
                     <div class="card-body px-0 pt-3 pb-1">
                         <p class="card-text" style="white-space: pre-wrap; color: #eee; font-size: 1rem;">{{ artigo.conteudo|truncatechars:150 }}</p>
                         <hr style="background-color: rgba(255,255,255,0.2);">
